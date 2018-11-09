@@ -1,0 +1,2 @@
+spring.data.mongodb.database: quote1
+spring.data.mongodb.uri: mongodb://user6:pass6@localhost:27017/?authSource=test&authMechanism=SCRAM-SHA-1&maxPoolSize=10

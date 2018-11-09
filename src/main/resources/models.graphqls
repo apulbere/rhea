@@ -1,0 +1,14 @@
+schema {
+    query : Query
+}
+
+type Query {
+    quotes(id: String, source: String, author: String, text: String): [Quote]
+}
+
+type Quote {
+    id: String
+    source: String
+    author: String
+    text: String
+}
