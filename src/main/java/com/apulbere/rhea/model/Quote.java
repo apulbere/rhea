@@ -14,10 +14,10 @@ import javax.validation.constraints.NotEmpty;
 @Document(collection = "quote")
 public class Quote {
     @Wither
-    private String id;
-    private String source;
-    private String author;
+    protected String id;
+    protected String source;
+    protected String author;
     @NotEmpty
-    private String text;
-    private long likes;
+    protected String text;
+    protected long likes;
 }

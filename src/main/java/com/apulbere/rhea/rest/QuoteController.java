@@ -1,7 +1,9 @@
 package com.apulbere.rhea.rest;
 
+import com.apulbere.rhea.model.DetailedQuote;
 import com.apulbere.rhea.model.Quote;
 import com.apulbere.rhea.repository.QuoteReactiveRepository;
+import com.apulbere.rhea.service.QuoteService;
 import graphql.GraphQL;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +25,12 @@ public class QuoteController {
 
     private GraphQL graphQL;
     private QuoteReactiveRepository quoteReactiveRepository;
+    private QuoteService quoteService;
+
+    @GetMapping("/{id}")
+    public Mono<DetailedQuote> findOne(@PathVariable String id) {
+        return quoteService.findOneDetailed(id);
+    }
 
     @PostMapping
     public Mono<Quote> save(@RequestBody @Valid Quote quote) {

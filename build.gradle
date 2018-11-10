@@ -29,6 +29,7 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-starter-webflux')
 	compile('com.graphql-java:graphiql-spring-boot-starter:5.0.2')
 	compile('com.graphql-java:graphql-java-tools:5.2.4')
+	compile('com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.9.7')
 
 	compileOnly('org.projectlombok:lombok:1.18.2')
 }
