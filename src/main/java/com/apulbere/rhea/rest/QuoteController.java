@@ -7,6 +7,8 @@ import com.apulbere.rhea.service.QuoteService;
 import graphql.GraphQL;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
@@ -30,6 +32,12 @@ public class QuoteController {
     @GetMapping("/{id}")
     public Mono<DetailedQuote> findOne(@PathVariable String id) {
         return quoteService.findOneDetailed(id);
+    }
+
+    @GetMapping("/top")
+    public Flux<Quote> findTop(@RequestParam(value = "page", defaultValue = "0") int page,
+                               @RequestParam(value = "size", defaultValue = "10") int size) {
+        return quoteReactiveRepository.findAll(PageRequest.of(page, size, new Sort(Sort.Direction.DESC, "likes")));
     }
 
     @PostMapping
