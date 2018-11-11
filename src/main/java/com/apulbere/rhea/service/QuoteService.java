@@ -2,11 +2,10 @@ package com.apulbere.rhea.service;
 
 import com.apulbere.rhea.model.DetailedQuote;
 import com.apulbere.rhea.model.Quote;
-import com.apulbere.rhea.model.goodreads.Book;
-import com.apulbere.rhea.model.goodreads.GoodreadsResponse;
-import com.apulbere.rhea.model.goodreads.Work;
+import com.apulbere.rhea.model.google.Book;
+import com.apulbere.rhea.model.google.Items;
+import com.apulbere.rhea.model.google.SearchResult;
 import com.apulbere.rhea.repository.QuoteReactiveRepository;
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
@@ -18,16 +17,14 @@ import reactor.core.publisher.Mono;
 public class QuoteService {
     private QuoteReactiveRepository quoteReactiveRepository;
     private WebClient openLibraryWebClient;
-    private XmlMapper xmlMapper;
-    private String goodreadsKey;
+    private String googleKey;
 
     public QuoteService(QuoteReactiveRepository quoteReactiveRepository,
                         WebClient openLibraryWebClient,
-                        @Value("${goodreads.key}") String goodreadsKey) {
+                        @Value("${google.key}") String googleKey) {
         this.quoteReactiveRepository = quoteReactiveRepository;
         this.openLibraryWebClient = openLibraryWebClient;
-        this.xmlMapper = new XmlMapper();
-        this.goodreadsKey = goodreadsKey;
+        this.googleKey = googleKey;
     }
 
     public Mono<DetailedQuote> findOneDetailed(String id) {
@@ -36,16 +33,15 @@ public class QuoteService {
 
     private Mono<DetailedQuote> findFirstBook(Quote quote) {
         return openLibraryWebClient.get()
-                .uri("/search.xml?key={key}&q={source}", goodreadsKey, quote.getSource())
-                .accept(MediaType.APPLICATION_XML)
+                .uri("/v1/volumes?q=intitle:{title}&key={key}", quote.getSource(), googleKey)
+                .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
-                .bodyToMono(String.class)
-                .map(goodreadsResponse -> new DetailedQuote(quote, convertGoodreadsResponse(goodreadsResponse)));
+                .bodyToMono(SearchResult.class)
+                .map(searchResult -> new DetailedQuote(quote, convertGoogleBooksResponse(searchResult)));
     }
 
     @SneakyThrows
-    private Book convertGoodreadsResponse(String value) {
-        GoodreadsResponse goodreadsResponse = xmlMapper.readValue(value, GoodreadsResponse.class);
-        return goodreadsResponse.getSearch().getResults().stream().findAny().map(Work::getBook).orElse(null);
+    private Book convertGoogleBooksResponse(SearchResult searchResult) {
+        return searchResult.getItems().stream().findAny().map(Items::getBook).orElse(null);
     }
 }

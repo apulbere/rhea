@@ -1,6 +1,6 @@
 package com.apulbere.rhea.model;
 
-import com.apulbere.rhea.model.goodreads.Book;
+import com.apulbere.rhea.model.google.Book;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 

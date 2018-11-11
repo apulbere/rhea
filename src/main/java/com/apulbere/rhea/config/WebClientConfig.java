@@ -8,7 +8,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 public class WebClientConfig {
 
     @Bean
-    public WebClient openLibraryWebClient(WebClient.Builder webClientBuilder) {
-        return webClientBuilder.baseUrl("https://www.goodreads.com").build();
+    public WebClient googleBooksClient(WebClient.Builder webClientBuilder) {
+        return webClientBuilder.baseUrl("https://www.googleapis.com/books").build();
     }
 }
