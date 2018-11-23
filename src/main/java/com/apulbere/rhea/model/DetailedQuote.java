@@ -8,6 +8,10 @@ import lombok.Data;
 public class DetailedQuote extends Quote {
     private Book book;
 
+    public DetailedQuote(Quote quote) {
+        this(quote, null);
+    }
+
     public DetailedQuote(Quote quote, Book book) {
         this.id = quote.id;
         this.text = quote.text;

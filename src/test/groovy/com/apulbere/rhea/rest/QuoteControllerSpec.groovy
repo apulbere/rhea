@@ -2,17 +2,13 @@ package com.apulbere.rhea.rest
 
 import com.apulbere.rhea.model.Quote
 import com.apulbere.rhea.repository.QuoteReactiveRepository
-import com.apulbere.rhea.repository.QuoteRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.context.annotation.Profile
 import org.springframework.http.MediaType
-import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.reactive.server.WebTestClient
 import reactor.core.publisher.Flux
 import spock.lang.Specification
 
-@ActiveProfiles(["test"])
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class QuoteControllerSpec extends Specification {
 

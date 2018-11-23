@@ -22,6 +22,4 @@ public class QuoteDataFetcher implements DataFetcher<List<Quote>> {
         Quote quote = objectMapper.convertValue(environment.getArguments(), Quote.class);
         return quoteRepository.findAll(Example.of(quote)).collectList().block();
     }
-
-
 }
