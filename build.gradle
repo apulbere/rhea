@@ -31,4 +31,11 @@ dependencies {
 	compile('com.graphql-java:graphql-java-tools:5.2.4')
 
 	compileOnly('org.projectlombok:lombok:1.18.2')
+
+	testCompile('org.springframework.boot:spring-boot-starter-test')
+	testCompile('org.codehaus.groovy:groovy-all:2.5.4')
+	testCompile('org.spockframework:spock-spring:1.2-groovy-2.5')
+	testCompile('org.spockframework:spock-core:1.2-groovy-2.5')
+
+	testCompile('de.flapdoodle.embed:de.flapdoodle.embed.mongo:2.1.1')
 }
