@@ -6,20 +6,21 @@ import com.apulbere.rhea.repository.QuoteReactiveRepository;
 import com.apulbere.rhea.service.QuoteService;
 import graphql.GraphQL;
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import javax.validation.Valid;
+import javax.validation.Validator;
 
 import static org.springframework.http.MediaType.APPLICATION_STREAM_JSON_VALUE;
 import static org.springframework.http.ResponseEntity.ok;
 
-@Slf4j
+@Validated
 @AllArgsConstructor
 @RestController
 @RequestMapping("/quotes")
@@ -28,6 +29,7 @@ public class QuoteController {
     private GraphQL graphQL;
     private QuoteReactiveRepository quoteReactiveRepository;
     private QuoteService quoteService;
+    private Validator validator;
 
     @GetMapping("/{id}")
     public Mono<DetailedQuote> findOne(@PathVariable String id) {
@@ -66,7 +68,7 @@ public class QuoteController {
     }
 
     @PostMapping(value = "/bulk", consumes = APPLICATION_STREAM_JSON_VALUE)
-    public Mono<Long> bulkInsert(@RequestBody Flux<Quote> quotes) {
-        return quoteReactiveRepository.insert(quotes).count();
+    public Flux<Quote> bulkInsert(@RequestBody Flux<Quote> quotes) {
+        return quoteReactiveRepository.insert(quotes.filter(quote -> validator.validate(quote).isEmpty()));
     }
 }

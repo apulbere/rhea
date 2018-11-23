@@ -21,7 +21,6 @@ public class GoogleBooksEnrich implements QuoteEnrich {
     private WebClient googleBookWebClient;
     private String googleKey;
 
-
     public GoogleBooksEnrich(WebClient.Builder webClientBuilder, @Value("${google.key}") String googleKey) {
         this.googleBookWebClient = webClientBuilder.baseUrl("https://www.googleapis.com/books").build();
         this.googleKey = googleKey;
